@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken")
 const config = require("./config")
 const rp = require("request-promise")
-
+const axios = require("axios")
 const express = require("express")
 const app = express()
 app.use(express.json())
@@ -22,13 +22,13 @@ const token = jwt.sign(payload, config.APISecret)
 app.get("/", (req, res) => res.send(req.body))
 
 //use userinfo from the form and make a post request to /userinfo
-app.post("/userinfo", (req, res) => {
+axios.post("/userinfo", (req, res) => {
   //store the email address of the user in the email variable
   email = req.body.email
   //check if the email was stored in the console
   console.log("email", email)
   //Store the options for Zoom API which will be used to make an API call later.
-  var options = {
+  const options = {
     //You can use a different uri if you're making an API call to a different Zoom endpoint.
     uri: "https://api.zoom.us/v2/users/" + email,
     qs: {
@@ -45,7 +45,7 @@ app.post("/userinfo", (req, res) => {
   }
 
   //Use request-promise module's .then() method to make request calls.
-  rp(options)
+  axios(options)
     .then(function (response) {
       //printing the response on the console
       console.log("User has", response)
