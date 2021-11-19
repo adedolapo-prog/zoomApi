@@ -7,7 +7,7 @@
 ### Install
 
 Clone the repo using git clone.
-`git clone https://github.com/zoom/zoom-api-jwt.git`
+`git clone https://github.com/adedolapo-prog/zoom-api-jwt.git`
 
 > Install the dependent node modules by typing `npm-install` in your terminal.
 
