@@ -85,6 +85,7 @@ app.get("/home", async (req, res) => {
 })
 
 const newMeeting = async () => {
+  console.log('hi')
   const options = {
     method: "POST",
     url: "https://api.zoom.us/v2/users/34Vgv2oLSO6BEsfkzkUx2w/meetings",
@@ -92,7 +93,7 @@ const newMeeting = async () => {
       "content-type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: {
+    data: {
       topic: "Demo Meeting 1",
       type: 2,
       start_time: "2021-11-20 12:00:00",
@@ -109,14 +110,18 @@ const newMeeting = async () => {
     },
     json: true,
   }
-  axios(options, function (error, response, body) {
-    if (error) throw new Error(error)
-    console.log(body)
+
+  return axios(options).then(function (response, body) {
+    return response.data
+  }).catch(function (error) {
+    //handle error
+    return new error("Unable to create meeting")
   })
 }
 
 app.post("/meeting", async (req, res) => {
-  newMeeting()
+  const meeting = await newMeeting()
+  console.log("meeting", meeting)
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
