@@ -24,10 +24,10 @@ const createUser = () => {
       "content-type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: {
+    data: {
       action: "custCreate",
       user_info: {
-        email: "adetoyebamise@gmail.com",
+        email: "zealightlabs@gmail.com",
         type: 1,
         first_name: "Adetoye",
         last_name: "Bamise",
@@ -46,29 +46,31 @@ const createUser = () => {
     })
 }
 
-const getUser = new Promise((resolve, reject) => {
-  let options = {
-    method: "GET",
-    // A non-existing sample userId is used in the example below.
-    url: "https://api.zoom.us/v2/users/zealightlabs@gmail.com",
-    headers: {
-      "User-Agent": "Zoom-api-Jwt-Request",
-      "content-type": "application/json",
-      authorization: `Bearer ${token}`, // Do not publish or share your token publicly.
-    },
-  }
-
-  axios(options)
-    .then(function (response) {
-      // console.log("body", response)
-      resolve(response)
-    })
-    .catch(function (response) {
-      //handle error
-      // console.log(response)
-      reject(response)
-    })
-})
+const getUser = () => {
+  return new Promise((resolve, reject) => {
+    let options = {
+      method: "GET",
+      // A non-existing sample userId is used in the example below.
+      url: "https://api.zoom.us/v2/users/zealightlabs@gmail.com",
+      headers: {
+        "User-Agent": "Zoom-api-Jwt-Request",
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`, // Do not publish or share your token publicly.
+      },
+    }
+  
+    axios(options)
+      .then(function (response) {
+        // console.log("body", response)
+        return resolve(response)
+      })
+      .catch(function (response) {
+        //handle error
+        // console.log(response)
+        return reject(response)
+      })
+  })
+}
 
 app.post("/home", async (req, res) => {
   createUser()
@@ -78,14 +80,8 @@ app.get("/home", async (req, res) => {
   // getUser(response => {
   //   res.json({ tokenJwt: response })
   // })
-  getUser
-    .then(response => {
-      console.log("resp", response)
-      res.json({ data: response.data })
-    })
-    .catch(error => {
-      console.log("errr", error)
-    })
+  let rezzz = await getUser()
+  console.log('res', rezzz.data)
 })
 
 const newMeeting = async () => {
